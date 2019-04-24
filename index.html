@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/styles.css">
+    <title>To be Replaced</title>
+</head>
+
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="./assets/javascript/game.js"></script>
+
+    <header>
+        <div class="jumbotron" style = "background-color: #666">
+            <h1 class="display-4 text-center text-white">Star Wars RPG</h1>
+            <p class="lead text-center"></p>
+        </div>
+    </header>
+
+    <div class="container startingArea">
+        <div class="row">
+            <div class="col-2">
+                <div class="card fighterSelect">
+                    <img src="./assets/images/Chewbacca.jpg" alt="#" class="card-body" height="200px">
+                </div>
+                <button class="selectCharacter allyBtn" data-name="Chewbacca">Chewbacca</button>
+            </div>
+            <div class="col-2">
+                <div class="card fighterSelect">
+                    <img src="./assets/images/ObiWan.jpg" alt="#" class="card-body" height="200px">
+                </div>
+                <button class="selectCharacter allyBtn" data-name="ObiWan">Obi Wan</button>
+            </div>
+            <div class="col-2">
+                <div class="card fighterSelect">
+                    <img src="./assets/images/QuiGon.jpg" alt="#" class="card-body" height="200px">
+                </div>
+                <button class="selectCharacter allyBtn" data-name="QuiGon">Qui-Gon</button>
+            </div>
+            <div class="col-2">
+                <div class="card fighterSelect">
+                    <img src="./assets/images/Solo.jpg" alt="#" class="card-body" height="200px">
+                </div>
+                <button class="selectCharacter allyBtn" data-name="Solo">Han Solo</button>
+            </div>
+            <div class="col">
+                <div class="information">
+                    <h2>Select Characters</h2>
+                    <p>
+                        Each one has different stats. Top row are playable, bottom row are enemies. For the enemies, the strength increases as you move right
+
+                        You will not be able to switch later.
+                    </p>
+                    <p id="playerSelection">Currently Selected:</p>
+                    <p id="enemySelection">Currently Fighting:</p>
+                    <button class="selectCharacter" data-name="confirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card enemySelect">
+                    <img src="./assets/images/Stormtrooper.jpg" alt="#" class="card-body" height="200px" width="150px">
+                </div>
+                <button class="selectCharacter" data-name="Stormtrooper">Stormtrooper</button>
+            </div>
+            <div class="col">
+                <div class="card enemySelect">
+                    <img src="./assets/images/Droideka.jpg" alt="#" class="card-body" height="200px" width="150px">
+                </div>
+                <button class="selectCharacter" data-name="Droideka">Droideka</button>
+            </div>
+            <div class="col">
+                <div class="card enemySelect">
+                    <img src="./assets/images/Maul.jpg" alt="#" class="card-body" height="200px" width="150px">
+                </div>
+                <button class="selectCharacter" data-name="Maul">Darth Maul</button>
+            </div>
+            <div class="col">
+                <div class="card enemySelect">
+                    <img src="./assets/images/Vader.jpg" alt="#" class="card-body" height="200px" width="150px">
+                </div>
+                <button class="selectCharacter" data-name="Vader">Darth Vader</button>
+            </div>
+            <div class="col">
+                <div class="card enemySelect">
+                    <img src="./assets/images/Sheev.jpg" alt="#" class="card-body" height="200px" width="150px">
+                </div>
+                <button class="selectCharacter" data-name="Sheev">The Emperor</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
