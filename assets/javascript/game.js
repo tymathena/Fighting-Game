@@ -14,7 +14,7 @@ $(document).ready(function () {
         availableEnemies: ["Stormtrooper", "Droideka", "Darth Maul", "Darth Vader", "Sheev"],
         currBattleAttacks: 0,
         
-
+        //character objects; store stats. specialAbility got cancelled
         Chewbacca: {
             attackPower: 15,
             defense: 25,
@@ -131,35 +131,55 @@ $(document).ready(function () {
 
             }
         },
-
+        //function to calculate damage dealt by player
         attack: function (ally, enemy) {
-            enemy.hp = Math.round(enemy.hp - ((100 * ally.attackPower) / (enemy.defense + 100 - ally.penetration)));
-            console.log((100 * ally.attackPower) / (enemy.defense + 100 - ally.penetration));
+            var tempPen;
+            if (ally.penetration > enemy.defense) {
+                tempPen = enemy.defense;
+            } else {
+                tempPen = ally.penetration;
+            }
+            //clever little formula for damage mitigation to give diminishing returns. Prevents invincible characters.
+            enemy.hp = Math.round(enemy.hp - ((100 * ally.attackPower) / ((enemy.defense - tempPen) + 100)));
+            //console.log((100 * ally.attackPower) / (enemy.defense + 100 - ally.penetration));
             game.counterAttack(ally, enemy);
         },
 
+        //function to calculate damage taken in return
         counterAttack: function (ally, enemy) {
-            ally.hp = Math.round(ally.hp - ((100 * enemy.attackPower) / (ally.defense + 100 - enemy.penetration)));
+            var tempPen;
+            if (enemy.penetration > ally.defense) {
+                tempPen = ally.defense;
+            } else {
+                tempPen = enemy.penetration;
+            }
+
+            ally.hp = Math.round(ally.hp - ((100 * enemy.attackPower) / ((ally.defense - tempPen) + 100)));
             console.log((100 * enemy.attackPower) / (ally.defense + 100 - enemy.penetration));
             game.renderFight();
         },
 
+        //manages the actual fights in the game
         initFight: function () {
 
+            //displays visuals 
             battleArea.attr("style", "display: initial;");
-
             console.log(game.chosenFighter)
             chosenEnemyObject = game[`${game.enemyFighter}`];
             chosenFighterObject = game[`${game.chosenFighter}`];
             game.renderFight();
             const buttonCol = $(`<div class="col-3"></div>`);
             buttonCol.append($(`<button class="attackBtn btnStyling">Attack</button>`))
-            //buttonCol.append($(`<button class="retreatBtn btnStyling">Retreat</button>`))
+            //buttonCol.append($(`<button class="retreatBtn btnStyling">Retreat</button>`))  //removed
             topArea.append(buttonCol);
 
+            //click listener for attacking
             $(".attackBtn").on("click", function () {
                 game.attack(chosenFighterObject, chosenEnemyObject);
+                //if win 
                 if(chosenEnemyObject.hp <= 0) {
+                    chosenEnemyObject.hp = 0;
+                    //Adds bounties to your stats
                     chosenFighterObject.attackPower += chosenEnemyObject.bounty[0];
                     alert(`You have gained ${chosenEnemyObject.bounty[0]} attack power!`)
                     chosenFighterObject.defense += chosenEnemyObject.bounty[1];
@@ -169,7 +189,9 @@ $(document).ready(function () {
                     chosenFighterObject.hp += chosenEnemyObject.bounty[3];
                     alert(`You have gained ${chosenEnemyObject.bounty[3]} HP!`)
                     chosenEnemyObject.hp = chosenEnemyObject.maxhp;
-                    setTimeout(game.multipleFightSelect, 1000);
+                    //setTimeout makes the game seem less jerky after a fight
+                    setTimeout(game.multipleFightSelect, 750);
+                //if loss
                 } else if (chosenFighterObject.hp <= 0) {
                     setTimeout(game.loss, 1000);
                 }
@@ -177,6 +199,7 @@ $(document).ready(function () {
 
         },
 
+        //handles the portraits
         renderFight: function () {
             battleArea = $(`<div class = "containter"> </div>`)
             characterPortrait.html(`<div class = "col"><div class="card"><img src="./assets/images/${game.chosenFighter}.jpg" alt="${game.chosenFighter}" class="card-body" height="200px" width="150px"></div><h4>HP: ${chosenFighterObject.hp}</h4><br/>
@@ -191,10 +214,13 @@ $(document).ready(function () {
               <h4>Penetration: ${chosenEnemyObject.penetration}</h4></div>`);
         },
 
+
+        //renders the screen to select enemies without selecting allies
         multipleFightSelect: function () {
             enemyPortrait.empty();
             characterPortrait.empty();
             battleArea.attr("style", "display: none;");
+            //brings back starting area and hides ally selector buttons and portraits
             $(".startingArea").attr("style", "display: initial;");
             $(".fighterSelect").attr("style", "display: none;");
             $(".allyBtn").attr("style", "display: none;");
@@ -203,6 +229,7 @@ $(document).ready(function () {
 
         },
 
+        //you lose
         loss: function () {
 
             $("body").empty();
@@ -211,9 +238,10 @@ $(document).ready(function () {
 
     }
 
+    //global variables
     let chosenFighterObject;
     let chosenEnemyObject;
-    console.log(chosenEnemyObject);
+    //console.log(chosenEnemyObject);
     let characterPortrait;
     let enemyPortrait;
     let battleArea = $(`<div class = "containter"> </div>`)
@@ -221,13 +249,15 @@ $(document).ready(function () {
     battleArea.append(topArea);
     let button = $(".selectCharacter");
 
+    //click listener to manage the buttons to select characters. Works both initially and on multiple fights
     const characterButton = function () {
-        value = $(this).attr("data-name");
+        value = $(this).attr("data-name"); //gets character picked
         currSelectionPlayer = $("#playerSelection");
         currSelectionEnemy = $("#enemySelection")
         topArea = $(`<div class="row"></div>`)
         battleArea = $(`<div class = "containter"> </div>`)
-        console.log(value);
+        //console.log(value);
+        //if statements are obsolete because I changed the way I wanted select to work
         if (value === "Chewbacca") {
             game.chosenFighter = "Chewbacca";
             console.log(game.chosenFighter);
@@ -258,12 +288,12 @@ $(document).ready(function () {
         } else if (value === "confirm") {
             resetBattleArea();
             game.initFight();
-
         }
         currSelectionPlayer.text(`Currently Selected: ${game.chosenFighter}`);
         currSelectionEnemy.text(`Currently Fighting: ${game.enemyFighter}`);
     }
 
+    //renders the second or later fight
     function resetBattleArea () {
         battleArea = $(`<div class = "containter"> </div>`)
         topArea = $(`<div class="row"></div>`)
